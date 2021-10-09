@@ -81,10 +81,11 @@ enum AP2RawHidCodes {
 void AP2Controller::SendDirect(unsigned char frame_count, unsigned char * frame_data) 
 {
     /* This sends HID RAW command to forward message directly to shine */
-    unsigned char frame[64];
-    frame[0] = AP2_RAW_FORWARD_SHINE;
-    frame[1] = CMD_LED_MASK_SET_ROW;
+    unsigned char frame[65];
+    frame[0] = 0; // Needed for Windows, discarded in Nix 
+    frame[1] = AP2_RAW_FORWARD_SHINE;
+    frame[2] = CMD_LED_MASK_SET_ROW;
     assert(frame_count <= 64-2);
-    memcpy(frame + 2, frame_data, frame_count);
-    hid_write(dev, frame, frame_count + 2);
+    memcpy(frame + 3, frame_data, frame_count);
+    hid_write(dev, frame, frame_count + 3);
 }
